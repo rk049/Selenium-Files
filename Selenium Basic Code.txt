@@ -1,0 +1,434 @@
+Basic:
+
+'''
+Selenium is open source tool for automation and can run on different OS and can be written in different languages.
+'''
+
+from selenium import webdriver
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://rahulshettyacademy.com/")
+driver.maximize_window()
+print(driver.title)
+print(driver.current_url)
+#let's put a debugger point in red color by clicking on left side and run in debugger mode
+#once we are in debugger mode we can run each step one by one by click on stepover icon from terminal window
+driver.get("https://rahulshettyacademy.com/AutomationPractice/")
+driver.back()
+driver.refresh()
+driver.minimize_window()
+driver.close()
+
+'''
+Locators:
+
+ID : driver.find_element_by_id()
+Name : driver.find_elements_by_name()
+ClassName: driver.find_elements_by_class_name()
+linkText : driver.find_element_by_link_text()
+Xpath : It is not dependent on development(whether defined them or not). We can build xpath for any web element.
+CSS : It is not dependent on development(whether defined them or not). We can build xpath for any web element.
+
+'''
+
+from selenium import webdriver
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://rahulshettyacademy.com/angularpractice/")
+driver.maximize_window()
+
+'''
+CSS : 
+
+tagname[attribute = 'value']
+("input[name='name']")
+'''
+
+driver.find_element_by_css_selector("input[name='name']").send_keys('Rohit')
+driver.find_element_by_css_selector("input[name='email']").send_keys('kumarr69@gmail.com')
+
+'''
+Xpath : //tagname[@attribute='value']
+//input[@name='name']")
+
+if we don't want to give tagname use * : 
+//*[@class='alert alert-success alert-dismissible']
+//*[contains(@class,'alert alert-success alert-dismissible')]
+
+xpath by text: 
+//button[text()='PROCEED TO CHECKOUT']
+'''
+'''
+
+driver.find_element_by_xpath("//input[@class='form-control']").send_keys('12345')
+driver.find_element_by_xpath("//input[@class='form-check-input']").click()
+driver.find_element_by_xpath("//input[@type='submit']").click()
+
+'''
+use chropath plugin to generate xpath/css directly. But use it for reference.
+download chropath plugin.
+go to inspect element > click on >> and select chropath and hover over to element ans we get the xpath/css
+'''
+
+'''
+After submitting form we get form submitted successfully. 
+To display the text or any other text n screen use .text
+
+print(driver.find_element_by_xpath("//div[@class,'alert alert-success alert-dismissible']").text)
+print(driver.find_element_by_xpath("//div[contains(@class,'alert alert-success alert-dismissible')]").text)
+'''
+
+#assertion to check whether test case is pass/fail
+#for that we store the text in some variable then assert it
+message = driver.find_element_by_xpath("//div[contains(@class,'alert alert-success alert-dismissible')]").text
+assert 'success' in message
+
+
+from selenium import webdriver
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://login.salesforce.com/")
+driver.maximize_window()
+
+'''
+if link is there in element e.g. <a href = www.google.com text = google>
+only if tagname is 'a' it will work
+use link_text
+'''
+
+driver.find_element_by_link_text('Forgot Your Password?').click()
+
+or
+
+//a[@id='forgot_password_link']
+
+'''
+parent child
+<div xyz
+    <class name>
+>
+
+if we are not able to identify unique element
+
+<div id="usernamegroup" class="inputgroup" xpath="1">
+    <label for="username" class="label usernamelabel">Username</label><div id="username_container"><div id="idcard-container" class="mt8 mb16" style="display: none"><div id="idcard"><img id="idcard-avatar" class="avatar" alt=""><a href="javascript:void(0);" id="clear_link" class="clearlink" onclick="LoginHint.clearExistingIdentity();"><img alt="Log In with a Different Username" class="clearicon" src="/img/clear.png"></a><span id="idcard-identity"></span></div></div><input class="input r4 wide mb16 mt8 username" type="email" value="" name="username" id="username" aria-describedby="error" style="display: block;"><input type="hidden" name="ExtraLog" value="%5B%7B%22width%22:1536%7D"></div></div>
+'''
+
+print(driver.find_element_by_xpath("//div[@id='usernamegroup']/label").text)
+
+---------------------------------------------------------------------------------
+
+AlertBox:
+
+import time
+from selenium import webdriver
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://rahulshettyacademy.com/AutomationPractice/")
+driver.maximize_window()
+
+driver.find_element_by_xpath("//input[@name='enter-name']").send_keys('Rohit')
+driver.find_element_by_xpath("//input[@id='alertbtn']").click()
+
+#since driver is only for HTML. and alert box is not html so we need to switch
+alert = driver.switch_to.alert
+print(alert.text)
+alert.accept()
+
+#to not accept alert use alert.dismiss()
+#alert.dismiss()
+
+---------------------------------------------------------------
+Checkbox:
+
+import time
+from selenium import webdriver
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://rahulshettyacademy.com/AutomationPractice/")
+driver.maximize_window()
+
+'''
+suppose in options there are three checkbox
+then instead of identifying each checkbox we can identify common locator for all the checkbox and use for loop to iterate over them
+e.g.
+<input id="checkBoxOption1" value="option1" name="checkBoxOption1" type="checkbox">
+<input id="checkBoxOption2" value="option2" name="checkBoxOption2" type="checkbox">
+<input id="checkBoxOption3" value="option3" name="checkBoxOption3" type="checkbox">
+
+so here for 3 options type is common
+'''
+
+options = driver.find_elements_by_xpath("//input[@type='checkbox']")
+print(len(options))
+
+'''
+for selecting all options
+
+for x in options:
+    x.click()
+    assert x.is_selected()
+'''
+#for selectig only onle value
+for x in options:
+    if x.get_attribute("value") == 'option2':
+        x.click()
+        assert x.is_selected()
+
+--------------------------------------------------------------
+
+Radio Button:
+
+import time
+from selenium import webdriver
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://rahulshettyacademy.com/AutomationPractice/")
+driver.maximize_window()
+
+options = driver.find_elements_by_xpath("//input[@type='radio']")
+print(len(options))
+
+for x in options:
+    if x.get_attribute("value") == 'radio1':
+        x.click()
+        assert x.is_selected()
+
+-------------------------------------------------------------------------		
+Static Dropdown:
+
+from selenium import webdriver
+from selenium.webdriver.support.select import Select
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://rahulshettyacademy.com/angularpractice/")
+driver.maximize_window()
+
+#dropdown
+
+#Static Dropdown
+
+#create object for dropdown
+
+dropdown = Select(driver.find_element_by_xpath("//select[@id='exampleFormControlSelect1']"))
+dropdown.select_by_visible_text('Male')
+
+#dropdown.select_by_index(0) --another way to select
+#dropdown.select_by_value('value specified') --another way to select
+
+-----------------------------------------------------------------
+Dynamic Dropdown:
+
+import time
+from selenium import webdriver
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://rahulshettyacademy.com/dropdownsPractise/")
+driver.maximize_window()
+
+#identify element where we type value
+suggestion = driver.find_element_by_xpath("//input[@id='autosuggest']").send_keys('ind')
+time.sleep(2)
+
+#identify element for suggestions coming not where we type value : Note: Use find_elements_by_xpath
+suggestion = driver.find_elements_by_xpath("//li[@class='ui-menu-item']/a")
+print(len(suggestion))
+
+for element in suggestion:
+    print(element.text)
+
+for element in suggestion:
+    if element.text == 'India':
+        element.click()
+        break
+
+---------------------------------------------------------------
+	
+Switching to new window:
+
+from selenium import webdriver
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://the-internet.herokuapp.com/windows")
+driver.maximize_window()
+driver.implicitly_wait(5)
+
+driver.find_element_by_xpath("//a[text()='Click Here']").click()
+new_window = driver.window_handles[1] #0 for parent and 1 for parent
+driver.switch_to.window(new_window)
+
+print(driver.find_element_by_tag_name('h3').text)
+
+-----------------------------------------------------------
+
+Switching to new tab:
+
+import time
+from selenium import webdriver
+driver = webdriver.Chrome(executable_path="C:\\chromedriver.exe")
+
+driver.get("https://the-internet.herokuapp.com/windows")
+driver.find_element_by_link_text("Click Here").click() # new tab opened
+childwindow = driver.window_handles[1]
+
+driver.switch_to.window(childwindow)
+new_tab_text = driver.find_element_by_tag_name("h3").text
+print(new_tab_text)
+
+assert "New Window" == new_tab_text
+time.sleep(5)
+
+#Switching to parent window
+driver.switch_to.window(driver.window_handles[0])
+
+---------------------------------------------------------
+
+Mouse Hover:
+
+from selenium import webdriver
+from selenium.webdriver import ActionChains
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://rahulshettyacademy.com/AutomationPractice/")
+driver.maximize_window()
+driver.implicitly_wait(5)
+
+action = ActionChains(driver)
+menu = driver.find_element_by_xpath("//button[text()='Mouse Hover']")
+action.move_to_element(menu).perform()
+reload = driver.find_element_by_link_text('Reload').click()
+action.move_to_element(reload).click().perform()
+
+DoubleClick:
+
+from selenium import webdriver
+from selenium.webdriver import ActionChains
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://chercher.tech/practice/practice-pop-ups-selenium-webdriver")
+driver.maximize_window()
+driver.implicitly_wait(5)
+
+action = ActionChains(driver)
+double_click = driver.find_element_by_xpath("//input[@id='double-click']")
+action.double_click(double_click).perform()
+
+--------------------------------------------------------------------
+
+Frames:
+
+'''
+frames can be iframe, frameset, frame
+see in html body.
+for working with frame we need to switch to it
+'''
+import time
+from selenium import webdriver
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://the-internet.herokuapp.com/")
+driver.maximize_window()
+driver.implicitly_wait(5)
+
+driver.find_element_by_xpath("//a[text()='Frames']").click()
+driver.find_element_by_xpath("//a[text()='iFrame']").click()
+driver.find_element_by_xpath("//button[text()='Ok']").click()
+#for switching to frame enter either frameid, frame name or index value from html
+driver.switch_to.frame("mce_0_ifr")
+driver.find_element_by_xpath("//body[@id='tinymce']").clear()
+driver.find_element_by_xpath("//body[@id='tinymce']").send_keys('Hi! It me Rohit')
+
+#now we are inside frame so we cannot work with other html element. For that we need to get out of frame
+driver.switch_to_default.content()
+
+----------------------------------------------------------
+
+Scroll
+
+from selenium import webdriver
+from selenium.webdriver import ActionChains
+import time
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.implicitly_wait(5)
+driver.get("https://www.google.com/")
+driver.maximize_window()
+
+driver.find_element_by_xpath("//input[@class='gLFyf gsfi']").send_keys('youtube')
+
+time.sleep(2)
+
+driver.find_element_by_xpath("//ul[@class='erkvQe']/li[1]/div[1]/div[@class='sbtc'][1]/div[1]/span").click()
+
+driver.find_element_by_xpath("//a[@href='https://www.youtube.com/']/h3[@class='LC20lb DKV0Md']").click()
+time.sleep(3)
+action = ActionChains(driver)
+scrollbar = driver.find_element_by_xpath("//html[@style]")
+action.move_to_element(scrollbar).perform()
+
+-------------------------------------------------------------------
+#to take screensot
+driver.get_screenshot_as_file("screen.png")
+
+------------------------------------------------
+
+E2E Project:
+
+import time
+from selenium import webdriver
+
+driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
+driver.get("https://rahulshettyacademy.com/seleniumPractise/")
+driver.maximize_window()
+driver.implicitly_wait(5)
+#implicitly_wait :  it will apply to all steps and wait upto max 5 secs for step toh happen. If step happen in 1 sec then it will continue next step.
+#but we need to mention time.sleep whever required since implicit tiime will wait for page load
+
+#explicit_wait : it is used to target only specific element
+
+#searching food
+driver.find_element_by_xpath("//input[@type='search']").send_keys('ber')
+time.sleep(4)
+#adding each food to cart
+cart = driver.find_elements_by_xpath("//div[@class='product-action']/button")
+for j in cart:
+    j.click()
+
+#click on cart
+driver.find_element_by_xpath("//img[@alt='Cart']").click()
+driver.find_element_by_xpath("//button[text()='PROCEED TO CHECKOUT']").click()
+
+#enter promo code
+driver.find_element_by_xpath("//input[@class='promoCode']").send_keys('rahulshettyacademy')
+driver.find_element_by_xpath("//button[@class='promoBtn']").click()
+promostatus = driver.find_element_by_xpath("//span[@class='promoInfo']").text
+assert 'Code applied ..!' in promostatus
+
+#Very Very important
+
+---------------------------------------------------------
+TABLE
+'''
+get sum of total amount ordered
+if parent are same for child
+e.g:
+<tr>
+    <td>
+    <td>
+    <td>
+
+then in that case go with grand parent
+<input>
+    <tr>
+        <td>
+        <td>
+        <td>
+'''
+
+amount = driver.find_elements_by_xpath("//tr/td[5]/p[@class='amount']")
+sum=0
+for i in amount:
+    print(i.text)
+    sum=sum+int(i.text)
+
+print(sum)
