@@ -242,6 +242,25 @@ for element in suggestion:
         element.click()
         break
 
+-----------------------------------------------------
+
+from selenium import webdriver
+from selenium.webdriver import ActionChains
+import time
+
+c
+driver.implicitly_wait(5)
+driver.get("https://www.google.com/")
+driver.maximize_window()
+
+driver.find_element_by_xpath("//input[@class='gLFyf gsfi']").send_keys('youtube')
+
+#for element like <span>YouTube</span> use below path -- //span[.='YouTube']
+
+suggestion = driver.find_element_by_xpath("//div[@class='wM6W7d']//span[.='YouTube']").click()
+
+time.sleep(2)
+
 ---------------------------------------------------------------
 	
 Switching to new window:
@@ -346,25 +365,16 @@ driver.switch_to_default.content()
 Scroll
 
 from selenium import webdriver
-from selenium.webdriver import ActionChains
 import time
 
+
 driver = webdriver.Chrome(executable_path="c:\\chromedriver.exe")
-driver.implicitly_wait(5)
-driver.get("https://www.google.com/")
+driver.get("https://www.countries-ofthe-world.com/flags-of-the-world.html")
 driver.maximize_window()
 
-driver.find_element_by_xpath("//input[@class='gLFyf gsfi']").send_keys('youtube')
-
-time.sleep(2)
-
-driver.find_element_by_xpath("//ul[@class='erkvQe']/li[1]/div[1]/div[@class='sbtc'][1]/div[1]/span").click()
-
-driver.find_element_by_xpath("//a[@href='https://www.youtube.com/']/h3[@class='LC20lb DKV0Md']").click()
-time.sleep(3)
-action = ActionChains(driver)
-scrollbar = driver.find_element_by_xpath("//html[@style]")
-action.move_to_element(scrollbar).perform()
+# scroll by pixcel
+driver.execute_script("window.scrollBy(0,2000)", "")
+time.sleep(4)
 
 -------------------------------------------------------------------
 #to take screensot
